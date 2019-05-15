@@ -1,0 +1,54 @@
+<!DOCTYPE html><html><head>
+    <script src="p5.min.js"></script>
+    <script src="p5.dom.min.js"></script>
+    <script src="p5.sound.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8">
+
+  </head>
+  <body>
+    <script src="sketch.js"></script>
+	<div class="column left">
+		<h2>Instructions</h2>
+		<p>Welcome. This is a simple visualizer for simple L-Systems. You can actually generate some
+		pretty cool images without a deep understanding. The fundamental concept is that we are starting with
+		a base sentence of "F", we call this the axiom. Then we have rules that can be thought of as taking one
+		thing and replacing it with another. For instance if my rule is F -> F+- then for each iteration of generation
+		we will replace each F with F+-. Gen 0 would just be our axiom F, gen 1 would be F+-, gen 2 would be F+-+-
+		and so on and so forth. This tool I've built uses a simple alphabet that can be translated into simple drawing
+		instructions. I have also given control of a few parameters that affect how the sentence will be drawn.
+		</p>
+		<ul style="text-align: left">
+			<li>F tells the program to draw forward Line Draw Length far</li>
+			<li>+ and - rotate the direction the next line will be drawn by the angle</li>
+			<li>[ tells the program to remember it's current location.</li>
+			<li>] tells the program to return to the last saved location</li>
+			<li>Rule is what F will be replaced by in each iteration</li>
+			<li>Scaling is meant to help you make sure the drawing stays in the canvas</li>
+			<li>Center will place the origin of the drawing in the center of the canvas</li>
+		</ul>
+		<p><b>Note:</b> Rules with a lot of symbols can get graphically dense quickly and cause browser lag.
+		Be careful with how many times you hit generate, especially with the default example.
+		</p>
+	</div>
+	<div class="column middle">
+		<div id="canvas"></div>
+		</br>
+		<div><b>Rule:</b> </div>
+		<div id="rule"></div>
+		<div><b>Angle:</b> </div>
+		<div id="angle"></div>
+		<div><b>Line Draw Length:</b> </div>
+		<div id="len"></div>
+		<div><b>Scaling:</b> </div>
+		<div id="scale"></div>
+		<div id="start"></div>
+		<div id="buttons"></div>
+	</div>
+	<div class="column right">
+		<h2>Current Settings</h2>
+		<div id="paramDisplay"></div>
+		<h2>Generation Information</h2>
+		<div id="generationDisplay"></div>
+	</div>
+  </body></html>
