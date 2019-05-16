@@ -1,0 +1,31 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+.column {
+	float: left
+}
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+.left {
+	margin: 20px;
+	width: 30%;
+	padding: 200px 0;
+	text-align: center;
+}
+.middle {
+	margin: 50px 0 0 50px;
+	width: 35%;
+}
+.right {
+	margin-top: 20px;
+	padding: 200px 0;
+	width: 25%;
+	text-align: left;
+}
