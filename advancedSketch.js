@@ -8,6 +8,8 @@ var scaling = .5
 var generation = 0
 
 var startPosition;
+var ruleStartInput;
+var ruleEndInput;
 
 rules[0] = {
   a: "F",
@@ -83,15 +85,31 @@ function moveOrigin(){
 	}
 }
 
+function addRuleFunc(){
+	rules.push({a: ruleStartInput.value(), b: ruleEndInput.value()})
+	displayCurrents()
+}
+
+function removeRuleFunc(){
+	rules.pop()
+	displayCurrents()
+}
+
 
 function setup() {
   var cnv = createCanvas(600, 600);
   background(51)
   cnv.parent("canvas")
   angleMode(DEGREES)
-  //createDiv("Rule")
-  var ruleInput = createInput(rules[0].b)
-  ruleInput.parent("rule")
+  ruleStartInput = createInput(rules[0].a)
+  ruleStartInput.size(10)
+  ruleStartInput.parent("ruleStart")
+  ruleEndInput = createInput(rules[0].b)
+  ruleEndInput.parent("ruleEnd")
+  var addRule = createButton("Add Rule")
+  var removeRule = createButton("Remove Rule")
+  addRule.parent("ruleButtons")
+  removeRule.parent("ruleButtons")
   //createDiv("Angle")
   var angleInput = createInput(angle)
   angleInput.parent("angle")
@@ -113,7 +131,7 @@ function setup() {
   turtle()
   //document.getElementById("paramDisplay").innerHTML = displayCurrents();
   displayCurrents()
-  var updateParams = () => {rules[0].b = ruleInput.value();
+  var updateParams = () => {
   angle = angleInput.value();
   len = drawLengthInput.value();
   currentLen = len;
@@ -122,10 +140,16 @@ function setup() {
   button1.mousePressed(updateParams)
   button2.mousePressed(generate)
   button3.mousePressed(resetCanvas)
+  addRule.mousePressed(addRuleFunc)
+  removeRule.mousePressed(removeRuleFunc)
 }
 
 function displayCurrents() {
-	document.getElementById("paramDisplay").innerHTML = "<b>Rule:</b> " + str(rules[0].b) + "</br>" +
+	var sentence = "<b>Rules<b>" + "</br>"
+	for(var i = 0; i<rules.length;i++){
+		sentence += str(rules[i].a) + " -> " + str(rules[i].b) + "</br>"
+	}
+	document.getElementById("paramDisplay").innerHTML = sentence + "</br>" +
 	"<b>Angle:</b> " + angle + "</br>" +
 	"<b>Line Draw Length:</b> " + len + "</br>" +
 	"<b>Scaling:</b> " + scaling;
