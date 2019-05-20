@@ -12,20 +12,22 @@
 		<h1>Advanced L-System Visualizer</h1>
 		<div style="padding: 110px 0">
 		<h2>Instructions</h2>
-		<p>Welcome. This is a simple visualizer for simple L-Systems. You can actually generate some
-		pretty cool images without a deep understanding. The fundamental concept is that we are starting with
-		a base sentence of "F", we call this the axiom. Then we have rules that can be thought of as taking one
-		thing and replacing it with another. For instance if my rule is F -> F+- then for each iteration of generation
-		we will replace each F with F+-. Gen 0 would just be our axiom F, gen 1 would be F+-, gen 2 would be F+-+-
-		and so on and so forth. This tool I've built uses a simple alphabet that can be translated into simple drawing
-		instructions. I have also given control of a few parameters that affect how the sentence will be drawn.
+		<p>Welcome. This is a simple visualizer for advanced L-Systems. If you haven't already checked
+		out the basics of L-Systems I encourage you to try the basic version of this app linked below.
+		The provided settings are much the same as before, but you now have the capability of adding
+		multiple rules. Any symbols can be used, but only the ones we have learned will be 
+		visually interpreted. If there are multiple rules with the same starting symbol only the first one
+		will be applied. There are so many more possibilities now so take it slow and see what awesome things
+		you can create.
 		</p>
 		<ul style="text-align: left">
 			<li>F tells the program to draw forward Line Draw Length far</li>
 			<li>+ and - rotate the direction the next line will be drawn by the angle</li>
 			<li>[ tells the program to remember it's current location.</li>
 			<li>] tells the program to return to the last saved location</li>
-			<li>Rule is what F will be replaced by in each iteration</li>
+			<li>Rulebox 1 is the symbol that will be replaced</li>
+			<li>Rulebox 2 is what will replace the first part of the rule</li>
+			<li>Remove rule removes the most recently added rule</li>
 			<li>Scaling is meant to help you make sure the drawing stays in the canvas</li>
 			<li>Center will place the origin of the drawing in the center of the canvas</li>
 		</ul>
