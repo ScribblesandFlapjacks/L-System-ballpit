@@ -1,12 +1,16 @@
-var symbols = ["F","+","-","[","]","A","B","a","b"];
+var symbols = ["F","+","-","[","]","A","B"];
 
-var fRule = {a: "F", b: ""};
-var aRule = {a: "A", b: ""};
-var bRule = {a: "B", b: ""};
-
-function randomFRule() {
+function randomRule(includeSymbol1,includeSymbol2) {
 	var ruleBase = "";
-	var containsAB = false;
+	var containsSymbol1 = false;
+	var containsSymbol2 = false;
+	
+	if(includeSymbol1 == ""){
+		containsSymbol1 = true;
+	}
+	if(includeSymbol2 == ""){
+		containsSymbol2 = true;
+	}
 	
 	var numberOfSymbols = Math.floor(Math.random() * 7) + 6;
 	var minNumF = Math.floor(Math.random() * 3) + 2;
@@ -16,27 +20,24 @@ function randomFRule() {
 		if(temp == "F"){
 			minNumF --;
 		}
-		if(temp == "A" || temp == "B"){
-			containsAB = true;
+		if(temp == includeSymbol1){
+			containsSymbol1 = true;
+		}
+		if(temp == includeSymbol2){
+			containsSymbol2 = true;
 		}
 		ruleBase += temp;
 	}
 	
-	if(!containsAB){
-		var chanceAB = Math.random()
-	
-		if(chanceAB > 0.5){
-			var tempIndex = Math.floor(Math.random() * ruleBase.length);
-			ruleBase = ruleBase.slice(0,tempIndex) + "A" + ruleBase.slice(tempIndex);
-			chanceAB = Math.random();
-			if(chanceAB > 0.5){
-				var tempIndex = Math.floor(Math.random() * ruleBase.length);
-				ruleBase = ruleBase.slice(0,tempIndex) + "B" + ruleBase.slice(tempIndex);
-			} else {
-				var tempIndex = Math.floor(Math.random() * ruleBase.length);
-				ruleBase = ruleBase.slice(0,tempIndex) + "B" + ruleBase.slice(tempIndex);
-			}
-		}
+	if(!containsSymbol1){
+		var tempIndex = Math.floor(Math.random() * ruleBase.length);
+		ruleBase = ruleBase.slice(0,tempIndex) + includeSymbol1 + ruleBase.slice(tempIndex);
+		console.log("Including " + includeSymbol1)
+	}
+	if(!containsSymbol2){
+		var tempIndex = Math.floor(Math.random() * ruleBase.length);
+		ruleBase = ruleBase.slice(0,tempIndex) + includeSymbol2 + ruleBase.slice(tempIndex);
+		console.log("Including " + includeSymbol2)
 	}
 	
 	if(minNumF > 0){

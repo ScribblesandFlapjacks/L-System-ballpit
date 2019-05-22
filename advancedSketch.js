@@ -35,9 +35,8 @@ function generate() {
     }
   }
   sentence = nextSentence
-  //createP(sentence)
   turtle()
-  randomFRule()
+  randomRule("A","B")
 }
 
 function turtle(){
