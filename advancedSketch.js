@@ -36,7 +36,6 @@ function generate() {
   }
   sentence = nextSentence
   turtle()
-  randomRule("A","B")
 }
 
 function turtle(){
