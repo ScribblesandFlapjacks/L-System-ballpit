@@ -16,8 +16,30 @@ function randomRule(ruleStart,includeSymbol1,includeSymbol2, forceInclude) {
 	var numberOfSymbols = Math.floor(Math.random() * 7) + 6;
 	var minNumF = Math.floor(Math.random() * 3) + 2;
 	
+	var previousSymbol = "";
+	var openBrace = false;
+	
 	for(var i = 0; i<numberOfSymbols; i++){
-		var temp = symbols[Math.floor(Math.random() * symbols.length)];
+		var valuableSymbols = symbols;
+		if(previousSymbol == "["){
+			valuableSymbols = symbols.slice(0,3)
+		}
+		if(previousSymbol == "+"){
+			valuableSymbols = symbols.slice(0,2).concat(symbols.slice(3))
+		}
+		if(previousSymbol == "-"){
+			valuableSymbols = symbols.slice(0,1).concat(symbols.slice(2))
+		}
+		var temp = valuableSymbols[Math.floor(Math.random() * valuableSymbols.length)];
+		if(temp == "["){
+			openBrace = true;
+		}
+		while(temp == "]" && !openBrace){
+			temp = valuableSymbols[Math.floor(Math.random() * valuableSymbols.length)]
+		}
+		if(temp == "]"){
+			openBrace = false;
+		}
 		if(temp == "F"){
 			minNumF --;
 		}
@@ -27,6 +49,7 @@ function randomRule(ruleStart,includeSymbol1,includeSymbol2, forceInclude) {
 		if(temp == includeSymbol2){
 			containsSymbol2 = true;
 		}
+		previousSymbol = temp;
 		ruleBase += temp;
 	}
 	if(forceInclude){	
@@ -53,6 +76,5 @@ function randomRule(ruleStart,includeSymbol1,includeSymbol2, forceInclude) {
 			ruleBase = ruleBase.slice(0,tempIndex) + "F" + ruleBase.slice(tempIndex);
 		}
 	}
-	
 	return({a: ruleStart, b: ruleBase})
 }
