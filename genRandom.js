@@ -40,12 +40,10 @@ function randomRule(ruleStart,includeSymbol1,includeSymbol2, forceInclude) {
 		if(!containsSymbol1){
 			var tempIndex = Math.floor(Math.random() * ruleBase.length);
 			ruleBase = ruleBase.slice(0,tempIndex) + includeSymbol1 + ruleBase.slice(tempIndex);
-			//console.log("Including " + includeSymbol1)
 		}
 		if(!containsSymbol2){
 			var tempIndex = Math.floor(Math.random() * ruleBase.length);
 			ruleBase = ruleBase.slice(0,tempIndex) + includeSymbol2 + ruleBase.slice(tempIndex);
-			//console.log("Including " + includeSymbol2)
 		}
 	}
 	
@@ -56,6 +54,5 @@ function randomRule(ruleStart,includeSymbol1,includeSymbol2, forceInclude) {
 		}
 	}
 	
-	//console.log(ruleStart + " -> " + ruleBase)
 	return({a: ruleStart, b: ruleBase})
 }

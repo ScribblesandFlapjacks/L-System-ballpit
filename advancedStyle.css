@@ -28,3 +28,6 @@ canvas {
 	width: 25%;
 	text-align: left;
 }
+td {
+	padding-right: 40px;
+}
