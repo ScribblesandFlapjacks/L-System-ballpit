@@ -94,6 +94,21 @@ function removeRuleFunc(){
 	displayCurrents()
 }
 
+function oneRandomRule(){
+	rules = [randomRule("F","","",false)]
+	displayCurrents()
+}
+
+function twoRandomRules(){
+	rules = [randomRule("F","A","",true),randomRule("A","A","",false)]
+	displayCurrents()
+}
+
+function threeRandomRules(){
+	rules = [randomRule("F","A","",true),randomRule("A","B","",true),randomRule("B","A","B",false)]
+	displayCurrents()
+}
+
 
 function setup() {
   var cnv = createCanvas(600, 600);
@@ -109,17 +124,21 @@ function setup() {
   var removeRule = createButton("Remove Rule")
   addRule.parent("ruleButtons")
   removeRule.parent("ruleButtons")
-  //createDiv("Angle")
+  
+  var oneRule = createButton("One rule L-System")
+  var twoRules = createButton("Two rule L-System")
+  var threeRules = createButton("Three rule L-System")
+  oneRule.parent("oneRule")
+  twoRules.parent("twoRules")
+  threeRules.parent("threeRules")
+  
   var angleInput = createInput(angle)
   angleInput.parent("angle")
-  //createDiv("Line Draw Length")
   var drawLengthInput = createInput(len)
   drawLengthInput.parent("len")
-  //createDiv("Generational Scaling")
   var scalingInput = createInput(scaling)
   scalingInput.parent("scale")
   startPosition = createCheckbox("Center", false)
-  //startPosition.changed(moveOrigin)
   startPosition.parent("start")
   var button1 = createButton("Update parameters")
   button1.parent("buttons")
@@ -128,7 +147,6 @@ function setup() {
   var button3 = createButton("Reset Canvas")
   button3.parent("buttons")
   turtle()
-  //document.getElementById("paramDisplay").innerHTML = displayCurrents();
   displayCurrents()
   var updateParams = () => {
   angle = angleInput.value();
@@ -136,11 +154,15 @@ function setup() {
   currentLen = len;
   scaling = scalingInput.value();
   displayCurrents();}
+  
   button1.mousePressed(updateParams)
   button2.mousePressed(generate)
   button3.mousePressed(resetCanvas)
   addRule.mousePressed(addRuleFunc)
   removeRule.mousePressed(removeRuleFunc)
+  oneRule.mousePressed(oneRandomRule)
+  twoRules.mousePressed(twoRandomRules)
+  threeRules.mousePressed(threeRandomRules)
 }
 
 function displayCurrents() {
