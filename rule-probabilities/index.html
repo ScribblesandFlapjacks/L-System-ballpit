@@ -1,0 +1,84 @@
+<!DOCTYPE html><html><head>
+    <script src="../p5.min.js"></script>
+    <script src="../p5.dom.min.js"></script>
+    <script src="../p5.sound.min.js"></script>
+	<script src="../generation-functions/gen-random.js"></script>
+    <link rel="stylesheet" type="text/css" href="rule-probabilities.style.css">
+    <meta charset="utf-8">
+
+  </head>
+  <body>
+    <script src="rule-probabilities.sketch.js"></script>
+	<div class="column left">
+		<h1>Stochastic L-System Visualizer</h1>
+		<div style="padding: 110px 0">
+		<h2>Instructions</h2>
+		<p>Welcome. This is a simple visualizer for advanced L-Systems. If you haven't already checked
+		out the basics of L-Systems I encourage you to try the basic version of this app linked below.
+		The provided settings are much the same as before, but you now have the capability of adding
+		multiple rules. Any symbols can be used, but only the ones we have learned will be 
+		visually interpreted. If there are multiple rules with the same starting symbol only the first one
+		will be applied. There are so many more possibilities now so take it slow and see what awesome things
+		you can create.
+		</p>
+		<ul style="text-align: left">
+			<li>F tells the program to draw forward Line Draw Length far</li>
+			<li>+ and - rotate the direction the next line will be drawn by the angle</li>
+			<li>[ tells the program to remember it's current location.</li>
+			<li>] tells the program to return to the last saved location</li>
+			<li>Rulebox 1 is the symbol that will be replaced</li>
+			<li>Rulebox 2 is what will replace the first part of the rule</li>
+			<li>Remove rule removes the most recently added rule</li>
+			<li>Scaling is meant to help you make sure the drawing stays in the canvas</li>
+			<li>Center will place the origin of the drawing in the center of the canvas</li>
+		</ul>
+		<p><b>Note:</b> Rules with a lot of symbols can get graphically dense quickly and cause browser lag.
+		Be careful with how many times you hit generate, especially with the default example.
+		</p>
+		<a href="../multi-rule/index.html">Multi-rule L-systems</a>
+		</div>
+	</div>
+	<div class="column middle">
+		<div id="canvas"></div>
+		</br>
+		<table id="ui">
+			<tr>
+				<td><b>Angle</b></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td id="angle"></td>
+				<td id="ruleEnd" style="display:inline-block">
+				<div style="display:inline-block" id="ruleStart"></div> -> </td>
+			</tr>
+			<tr>
+				<td><b>Line Draw Length</b> </td>
+				<td id="ruleButtons"></td>
+			</tr>
+			<tr>
+				<td id="len"></td>
+				<td><b>Random L-Systems</b></td>
+			</tr>
+			<tr>
+				<td><b>Scaling</b></td>
+				<td id="oneRule"></td>
+			</tr>
+			<tr>
+				<td id="scale"></td>
+				<td id="twoRules"></td>
+			</tr>
+			<tr>
+				<td id="start"></td>
+				<td id="threeRules"></td>
+			</tr>
+		</table>
+		</br>
+		<div id="buttons"></div>
+	</div>
+	<div class="column right">
+		<h2>Current Settings</h2>
+		<div id="paramDisplay"></div>
+		<h2>Generation Information</h2>
+		<div id="generationDisplay"></div>
+	</div>
+  </body></html>
