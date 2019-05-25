@@ -13,7 +13,8 @@ var ruleEndInput;
 
 rules[0] = {
   a: "F",
-  b: "FF+[+F-F-F]-[-F+F+F]"
+  b: "FF+[+F-F-F]-[-F+F+F]",
+  c: 1
 }
 
 function generate() {
@@ -95,17 +96,24 @@ function removeRuleFunc(){
 }
 
 function oneRandomRule(){
-	rules = [randomRule("F","","",false)]
+	rules = [randomRule("F",{symbol:"",forceInclude:false},{symbol:"",forceInclude:false},false)]
 	displayCurrents()
 }
 
 function twoRandomRules(){
-	rules = [randomRule("F","A","",true),randomRule("A","A","",false)]
+	rules = [
+	randomRule("F",{symbol:"A",forceInclude:true},{symbol:"",forceInclude:false},false),
+	randomRule("A",{symbol:"A",forceInclude:false},{symbol:"",forceInclude:false},false)
+	]
 	displayCurrents()
 }
 
 function threeRandomRules(){
-	rules = [randomRule("F","A","",true),randomRule("A","B","",true),randomRule("B","A","B",false)]
+	rules = [
+	randomRule("F",{symbol:"A",forceInclude:true},{symbol:"",forceInclude:false},false),
+	randomRule("A",{symbol:"B",forceInclude:true},{symbol:"",forceInclude:false},false),
+	randomRule("B",{symbol:"A",forceInclude:false},{symbol:"B",forceInclude:false},false)
+	]
 	displayCurrents()
 }
 

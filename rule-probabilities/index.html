@@ -13,13 +13,16 @@
 		<h1>Stochastic L-System Visualizer</h1>
 		<div style="padding: 110px 0">
 		<h2>Instructions</h2>
-		<p>Welcome. This is a simple visualizer for advanced L-Systems. If you haven't already checked
-		out the basics of L-Systems I encourage you to try the basic version of this app linked below.
-		The provided settings are much the same as before, but you now have the capability of adding
-		multiple rules. Any symbols can be used, but only the ones we have learned will be 
-		visually interpreted. If there are multiple rules with the same starting symbol only the first one
-		will be applied. There are so many more possibilities now so take it slow and see what awesome things
-		you can create.
+		<p>Welcome. This is a simple visualizer for Stochastic L-systems. If you haven't already checked
+		out the basics of L-Systems I encourage you to try some of the previous examples in this series.
+		The provided settings are much the same as before, but now we have rule probabilities. This means
+		that unlike before a rule might not be applied. For instance if a rule has a probability of 0.50,
+		then it will occur half of the times it is encountered. With our basic example we can now generate
+		unique variations simply by not having the replacements occur in a known pattern. Another side effect
+		is that if we have multiple F rules such as F[0.5] -> A and F[0.5] -> B then if the first replacement
+		doesn't occur the second one will be considered and in this case have a 50% chance of being used.
+		Duplicate rules below each other in the list will essentially have a chance equal to all previous
+		duplicate rules probabilities muliplied together.
 		</p>
 		<ul style="text-align: left">
 			<li>F tells the program to draw forward Line Draw Length far</li>
@@ -27,7 +30,8 @@
 			<li>[ tells the program to remember it's current location.</li>
 			<li>] tells the program to return to the last saved location</li>
 			<li>Rulebox 1 is the symbol that will be replaced</li>
-			<li>Rulebox 2 is what will replace the first part of the rule</li>
+			<li>Rulebox 2 is the probability of replacement</li>
+			<li>Rulebox 3 is what will replace the first part of the rule</li>
 			<li>Remove rule removes the most recently added rule</li>
 			<li>Scaling is meant to help you make sure the drawing stays in the canvas</li>
 			<li>Center will place the origin of the drawing in the center of the canvas</li>
@@ -49,7 +53,8 @@
 			<tr>
 				<td id="angle"></td>
 				<td id="ruleEnd" style="display:inline-block">
-				<div style="display:inline-block" id="ruleStart"></div> -> </td>
+				<div style="display:inline-block" id="ruleStart"></div>
+				<div style="display:inline-block" id="ruleProbability"></div> -> </td>
 			</tr>
 			<tr>
 				<td><b>Line Draw Length</b> </td>

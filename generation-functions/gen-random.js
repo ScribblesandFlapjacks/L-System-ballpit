@@ -1,14 +1,14 @@
-function randomRule(ruleStart,includeSymbol1,includeSymbol2, forceInclude) {
+function randomRule(ruleStart,symbol1,symbol2, stochastic) {
 	var symbols = ["F","+","-","[","]"];
 	
 	var containsSymbol1 = false;
 	var containsSymbol2 = false;
 	
-	if(!includeSymbol1 == ""){
-		symbols.push(includeSymbol1)
+	if(symbol1.symbol == ""){
+		symbols.push(symbol1.symbol)
 	}
-	if(!includeSymbol2 == ""){
-		symbols.push(includeSymbol2)
+	if(!symbol2.symbol == ""){
+		symbols.push(symbol2.symbol)
 	}
 	
 	var ruleBase = "";
@@ -43,27 +43,32 @@ function randomRule(ruleStart,includeSymbol1,includeSymbol2, forceInclude) {
 		if(temp == "F"){
 			minNumF --;
 		}
-		if(temp == includeSymbol1){
+		if(temp == symbol1.symbol){
 			containsSymbol1 = true;
 		}
-		if(temp == includeSymbol2){
+		if(temp == symbol2.symbol){
 			containsSymbol2 = true;
 		}
 		previousSymbol = temp;
 		ruleBase += temp;
 	}
-	if(forceInclude){	
-		if(includeSymbol1 == ""){
+	
+	if(symbol1.forceInclude){	
+		if(symbol1.symbol == ""){
 			containsSymbol1 = true;
-		}
-		if(includeSymbol2 == ""){
-			containsSymbol2 = true;
 		}
 		
 		if(!containsSymbol1){
 			var tempIndex = Math.floor(Math.random() * ruleBase.length);
-			ruleBase = ruleBase.slice(0,tempIndex) + includeSymbol1 + ruleBase.slice(tempIndex);
+			ruleBase = ruleBase.slice(0,tempIndex) + symbol1.symbol + ruleBase.slice(tempIndex);
 		}
+	}
+	
+	if(symbol2.forceInclude){
+		if(symbol2.symbol == ""){
+			containsSymbol2 = true;
+		}
+		
 		if(!containsSymbol2){
 			var tempIndex = Math.floor(Math.random() * ruleBase.length);
 			ruleBase = ruleBase.slice(0,tempIndex) + includeSymbol2 + ruleBase.slice(tempIndex);
@@ -76,5 +81,13 @@ function randomRule(ruleStart,includeSymbol1,includeSymbol2, forceInclude) {
 			ruleBase = ruleBase.slice(0,tempIndex) + "F" + ruleBase.slice(tempIndex);
 		}
 	}
-	return({a: ruleStart, b: ruleBase})
+	var probability;
+	
+	if(stochastic){
+		probability = Math.round((Math.random() *.6 + .3) * 100) / 100
+	} else {
+		probability = 1
+	}
+	
+	return({a: ruleStart, b: ruleBase, c: probability})
 }

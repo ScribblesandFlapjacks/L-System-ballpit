@@ -9,11 +9,13 @@ var generation = 0
 
 var startPosition;
 var ruleStartInput;
+var ruleProbabilityInput;
 var ruleEndInput;
 
 rules[0] = {
   a: "F",
-  b: "FF+[+F-F-F]-[-F+F+F]"
+  b: "FF+[+F-F-F]-[-F+F+F]",
+  c: 1
 }
 
 function generate() {
@@ -24,7 +26,8 @@ function generate() {
     var currentChar = sentence.charAt(i)
     for(var j = 0; j<rules.length; j++){
       var found = false
-      if(currentChar == rules[j].a) {
+	  var chance = Math.random()
+      if(currentChar == rules[j].a && chance < rules[j].c) {
         found = true
         nextSentence += rules[j].b
         break;
@@ -85,7 +88,7 @@ function moveOrigin(){
 }
 
 function addRuleFunc(){
-	rules.push({a: ruleStartInput.value(), b: ruleEndInput.value()})
+	rules.push({a: ruleStartInput.value(), b: ruleEndInput.value(), c:ruleProbabilityInput.value()})
 	displayCurrents()
 }
 
@@ -95,17 +98,24 @@ function removeRuleFunc(){
 }
 
 function oneRandomRule(){
-	rules = [randomRule("F","","",false)]
+	rules = [randomRule("F",{symbol:"",forceInclude:false},{symbol:"",forceInclude:false},true)]
 	displayCurrents()
 }
 
 function twoRandomRules(){
-	rules = [randomRule("F","A","",true),randomRule("A","A","",false)]
+	rules = [
+		randomRule("F",{symbol:"A",forceInclude:true},{symbol:"",forceInclude:false},true),
+		randomRule("A",{symbol:"A",forceInclude:false},{symbol:"",forceInclude:false},true)
+	]
 	displayCurrents()
 }
 
 function threeRandomRules(){
-	rules = [randomRule("F","A","",true),randomRule("A","B","",true),randomRule("B","A","B",false)]
+	rules = [
+		randomRule("F",{symbol:"A",forceInclude:true},{symbol:"",forceInclude:false},true),
+		randomRule("A",{symbol:"B",forceInclude:true},{symbol:"",forceInclude:false},true),
+		randomRule("B",{symbol:"A",forceInclude:false},{symbol:"B",forceInclude:false},true)
+	]
 	displayCurrents()
 }
 
@@ -115,9 +125,13 @@ function setup() {
   background(51)
   cnv.parent("canvas")
   angleMode(DEGREES)
+  
   ruleStartInput = createInput(rules[0].a)
   ruleStartInput.size(10)
   ruleStartInput.parent("ruleStart")
+  ruleProbabilityInput = createInput(rules[0].c)
+  ruleProbabilityInput.size(30)
+  ruleProbabilityInput.parent("ruleProbability")
   ruleEndInput = createInput(rules[0].b)
   ruleEndInput.parent("ruleEnd")
   var addRule = createButton("Add Rule")
@@ -168,7 +182,7 @@ function setup() {
 function displayCurrents() {
 	var sentence = "<b>Rules<b>" + "</br>"
 	for(var i = 0; i<rules.length;i++){
-		sentence += str(rules[i].a) + " -> " + str(rules[i].b) + "</br>"
+		sentence += str(rules[i].a) + "[" + rules[i].c + "]" + " -> " + str(rules[i].b) + "</br>"
 	}
 	document.getElementById("paramDisplay").innerHTML = sentence + "</br>" +
 	"<b>Angle:</b> " + angle + "</br>" +
