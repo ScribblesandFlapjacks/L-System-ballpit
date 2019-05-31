@@ -14,18 +14,13 @@ canvas {
 	clear: both;
 }
 .left {
-	margin: 20px;
-	width: 30%;
-	text-align: center;
-}
-.middle {
 	margin: 50px 0 0 50px;
-	width: 35%;
+	width: 65%;
 }
 .right {
 	margin-top: 20px;
-	padding: 200px 0;
-	width: 25%;
+	padding: 100px 0;
+	width: 30%;
 	text-align: left;
 }
 td {

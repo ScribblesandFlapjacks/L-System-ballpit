@@ -4,7 +4,7 @@ var rules = []
 var len = 100;
 var currentLen = len;
 var angle = 25
-var scaling = .5
+var scaling = .8
 var generation = 0
 
 var startPosition;
@@ -73,7 +73,7 @@ function turtle(){
 function resetCanvas(){
   clear()
   background(51)
-  sentence = "F"
+  sentence = axiom
   currentLen = len
   generation = 0
   turtle()
@@ -129,7 +129,7 @@ function hideShow () {
 }
 
 function setup() {
-  var cnv = createCanvas(600, 600);
+  var cnv = createCanvas(windowWidth * .6,windowHeight * .9);
   background(51)
   cnv.parent("canvas")
   angleMode(DEGREES)
@@ -154,6 +154,8 @@ function setup() {
   twoRules.parent("twoRules")
   threeRules.parent("threeRules")
   
+  var axiomInput = createInput(axiom)
+  axiomInput.parent("axiom")
   var angleInput = createInput(angle)
   angleInput.parent("angle")
   var drawLengthInput = createInput(len)
@@ -171,6 +173,8 @@ function setup() {
   turtle()
   displayCurrents()
   var updateParams = () => {
+  axiom = axiomInput.value();
+  sentence = axiom;
   angle = angleInput.value();
   len = drawLengthInput.value();
   currentLen = len;
@@ -197,6 +201,7 @@ function displayCurrents() {
 		sentence += str(rules[i].a) + "[" + rules[i].c + "]" + " -> " + str(rules[i].b) + "</br>"
 	}
 	document.getElementById("paramDisplay").innerHTML = sentence + "</br>" +
+	"<b>Axiom:</b> " + axiom + "</br>" +
 	"<b>Angle:</b> " + angle + "</br>" +
 	"<b>Line Draw Length:</b> " + len + "</br>" +
 	"<b>Scaling:</b> " + scaling;
