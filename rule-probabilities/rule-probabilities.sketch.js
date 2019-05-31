@@ -66,8 +66,8 @@ function turtle(){
       pop()
     }
   }
-  document.getElementById("generationDisplay").innerHTML = "<b>Current Generation:</b> " + generation + "</br>" +
-															"<b>Current Sentence:</b> " + sentence;
+  document.getElementById("generationDisplay").innerHTML = "<b>Current Generation:</b> " + generation
+  document.getElementById("sentenceDisplay").innerHTML = sentence
 }
 
 function resetCanvas(){
@@ -119,6 +119,14 @@ function threeRandomRules(){
 	displayCurrents()
 }
 
+function hideShow () {
+	var sentence = document.getElementById("sentenceDisplay")
+	if(sentence.style.display !== "none"){
+		sentence.style.display = "none"
+	} else {
+		sentence.style.display = "block"
+	}
+}
 
 function setup() {
   var cnv = createCanvas(600, 600);
@@ -168,6 +176,10 @@ function setup() {
   currentLen = len;
   scaling = scalingInput.value();
   displayCurrents();}
+  
+  var sentenceVisibility = createButton("Hide/Show Sentence")
+  sentenceVisibility.parent("hide/showSentence")
+  sentenceVisibility.mousePressed(hideShow)
   
   button1.mousePressed(updateParams)
   button2.mousePressed(generate)
