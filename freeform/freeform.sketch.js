@@ -12,6 +12,11 @@ var ruleStartInput;
 var ruleProbabilityInput;
 var ruleEndInput;
 
+var animating = false;
+var maxGeneration;
+var startAnimation;
+var stopAnimation;
+
 rules[0] = {
   a: "F",
   b: "FF+[+F-F-F]-[-F+F+F]",
@@ -124,6 +129,28 @@ function threeRandomRules(){
 	displayCurrents()
 }
 
+var timeoutId;
+
+function startAnim(){
+	animating = true;
+	setTimeout(animHelper(), 1000)
+}
+function animHelper(){
+	timeoutId = setTimeout(function(){if(generation < maxGeneration.value()){
+			maxGeneration.value();
+			generate()
+			if(animating == true) {
+				animHelper()
+			}
+	} else { resetCanvas(); if(animating == true){animHelper()}	}}, 1000)
+}
+
+function stopAnim(){
+	clearTimeout(timeoutId);
+	animating = false;
+}
+		
+
 function hideShow () {
 	var sentence = document.getElementById("sentenceDisplay")
 	if(sentence.style.display !== "none"){
@@ -185,6 +212,16 @@ function setup() {
   currentLen = len;
   scaling = scalingInput.value();
   displayCurrents();}
+  
+  maxGeneration = createInput(4)
+  maxGeneration.size(20)
+  maxGeneration.parent("maxGen")
+  startAnimation = createButton("Start")
+  stopAnimation = createButton("Stop")
+  startAnimation.parent("animationButtons")
+  stopAnimation.parent("animationButtons")
+  startAnimation.mousePressed(startAnim)
+  stopAnimation.mousePressed(stopAnim)
   
   var sentenceVisibility = createButton("Hide/Show Sentence")
   sentenceVisibility.parent("hide/showSentence")
