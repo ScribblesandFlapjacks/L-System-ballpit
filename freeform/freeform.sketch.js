@@ -27,6 +27,11 @@ function generate() {
     for(var j = 0; j<rules.length; j++){
       var found = false
 	  var chance = Math.random()
+	  if(generation - 1 == 0 && currentChar == rules[j].a){
+		found = true
+		nextSentence += rules[j].b
+		break;
+	  }
       if(currentChar == rules[j].a && chance < rules[j].c) {
         found = true
         nextSentence += rules[j].b
@@ -34,7 +39,7 @@ function generate() {
       }
     }
     if(!found){
-      nextSentence += currentChar
+		nextSentence += currentChar
     }
   }
   sentence = nextSentence
