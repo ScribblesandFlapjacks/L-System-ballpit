@@ -1,3 +1,8 @@
+//Returns a random rule
+//@params ruleStart: the symbol that is being replaced
+//symbol1: {symbol: symbol to be included, forceInclude: boolean that says if the symbol must be included}
+//symbol2: {symbol: symbol to be included, forceInclude: boolean that says if the symbol must be included}
+//stochastic: boolean that decides if the rule is given a non 1 probability
 function randomRule(ruleStart,symbol1,symbol2, stochastic) {
 	var symbols = ["F","+","-","[","]"];
 	

@@ -1,3 +1,4 @@
+//Initial parameter setup
 var axiom = "F"
 var sentence = axiom
 var rules = []
@@ -7,22 +8,25 @@ var angle = 25
 var scaling = .8
 var generation = 0
 
+//Initial ui variable setup
 var startPosition;
 var ruleStartInput;
 var ruleProbabilityInput;
 var ruleEndInput;
 
-var animating = false;
+//Animation ui variable setup
 var maxGeneration;
 var startAnimation;
 var stopAnimation;
 
+//Default rule
 rules[0] = {
   a: "F",
   b: "FF+[+F-F-F]-[-F+F+F]",
   c: 1
 }
 
+//Takes the previous sentence and generates the next sentence
 function generate() {
   currentLen *= scaling
   generation += 1
@@ -51,6 +55,7 @@ function generate() {
   turtle()
 }
 
+//Converts the sentence into drawing instructions and updates generationDisplay and sentecneDisplay
 function turtle(){
   background(51)
   resetMatrix()
@@ -80,6 +85,7 @@ function turtle(){
   document.getElementById("sentenceDisplay").innerHTML = sentence
 }
 
+//Empties the canvas and resets the parameters to their initial settings
 function resetCanvas(){
   clear()
   background(51)
@@ -89,29 +95,25 @@ function resetCanvas(){
   turtle()
 }
 
-function moveOrigin(){
-	if(this.checked()){
-		translate(width/2,height/2)
-	} else {
-		translate(width/2,height)
-	}
-}
-
+//Adds the user inputtted rule to the end of the rule array
 function addRuleFunc(){
 	rules.push({a: ruleStartInput.value(), b: ruleEndInput.value(), c:ruleProbabilityInput.value()})
 	displayCurrents()
 }
 
+//Removes the last rule in the rules array
 function removeRuleFunc(){
 	rules.pop()
 	displayCurrents()
 }
 
+//Replaces current rules with one random rule
 function oneRandomRule(){
 	rules = [randomRule("F",{symbol:"",forceInclude:false},{symbol:"",forceInclude:false},true)]
 	displayCurrents()
 }
 
+//Replaces current rules with two random rules
 function twoRandomRules(){
 	rules = [
 		randomRule("F",{symbol:"A",forceInclude:true},{symbol:"",forceInclude:false},true),
@@ -120,6 +122,7 @@ function twoRandomRules(){
 	displayCurrents()
 }
 
+//Replaces current rules with three random rules
 function threeRandomRules(){
 	rules = [
 		randomRule("F",{symbol:"A",forceInclude:true},{symbol:"",forceInclude:false},true),
@@ -129,12 +132,17 @@ function threeRandomRules(){
 	displayCurrents()
 }
 
+//Animation global variables
+var animating = false;
 var timeoutId;
 
+//Begins the animation loop
 function startAnim(){
 	animating = true;
 	setTimeout(animHelper(), 1000)
 }
+
+//Helper for the recursive animation loop
 function animHelper(){
 	timeoutId = setTimeout(function(){if(generation < maxGeneration.value()){
 			maxGeneration.value();
@@ -145,12 +153,13 @@ function animHelper(){
 	} else { resetCanvas(); if(animating == true){animHelper()}	}}, 1000)
 }
 
+//Stops an ongoing animation
 function stopAnim(){
 	clearTimeout(timeoutId);
 	animating = false;
 }
 		
-
+//Toggles visibility of sentenceDisplay
 function hideShow () {
 	var sentence = document.getElementById("sentenceDisplay")
 	if(sentence.style.display !== "none"){
@@ -160,12 +169,24 @@ function hideShow () {
 	}
 }
 
+//Initial setup of the canvas and ui
 function setup() {
   var cnv = createCanvas(windowWidth * .6,windowHeight * .9);
   background(51)
   cnv.parent("canvas")
   angleMode(DEGREES)
   
+  //Updates parameters with input values
+  var updateParams = () => {
+  axiom = axiomInput.value();
+  sentence = axiom;
+  angle = angleInput.value();
+  len = drawLengthInput.value();
+  currentLen = len;
+  scaling = scalingInput.value();
+  displayCurrents();}
+  
+  //Rule ui setup
   ruleStartInput = createInput(rules[0].a)
   ruleStartInput.size(10)
   ruleStartInput.parent("ruleStart")
@@ -178,14 +199,21 @@ function setup() {
   var removeRule = createButton("Remove Rule")
   addRule.parent("ruleButtons")
   removeRule.parent("ruleButtons")
+  addRule.mousePressed(addRuleFunc)
+  removeRule.mousePressed(removeRuleFunc)
   
+  //Random rule ui setup
   var oneRule = createButton("One rule L-System")
   var twoRules = createButton("Two rule L-System")
   var threeRules = createButton("Three rule L-System")
   oneRule.parent("oneRule")
   twoRules.parent("twoRules")
   threeRules.parent("threeRules")
+  oneRule.mousePressed(oneRandomRule)
+  twoRules.mousePressed(twoRandomRules)
+  threeRules.mousePressed(threeRandomRules)
   
+  //Parameter and canvas controls setup
   var axiomInput = createInput(axiom)
   axiomInput.parent("axiom")
   var angleInput = createInput(angle)
@@ -202,17 +230,16 @@ function setup() {
   button2.parent("buttons")
   var button3 = createButton("Reset Canvas")
   button3.parent("buttons")
-  turtle()
-  displayCurrents()
-  var updateParams = () => {
-  axiom = axiomInput.value();
-  sentence = axiom;
-  angle = angleInput.value();
-  len = drawLengthInput.value();
-  currentLen = len;
-  scaling = scalingInput.value();
-  displayCurrents();}
+  button1.mousePressed(updateParams)
+  button2.mousePressed(generate)
+  button3.mousePressed(resetCanvas)
   
+  //Visibility toggle ui
+  var sentenceVisibility = createButton("Hide/Show Sentence")
+  sentenceVisibility.parent("hide/showSentence")
+  sentenceVisibility.mousePressed(hideShow)
+  
+  //Animation controls setup
   maxGeneration = createInput(4)
   maxGeneration.size(20)
   maxGeneration.parent("maxGen")
@@ -223,20 +250,11 @@ function setup() {
   startAnimation.mousePressed(startAnim)
   stopAnimation.mousePressed(stopAnim)
   
-  var sentenceVisibility = createButton("Hide/Show Sentence")
-  sentenceVisibility.parent("hide/showSentence")
-  sentenceVisibility.mousePressed(hideShow)
-  
-  button1.mousePressed(updateParams)
-  button2.mousePressed(generate)
-  button3.mousePressed(resetCanvas)
-  addRule.mousePressed(addRuleFunc)
-  removeRule.mousePressed(removeRuleFunc)
-  oneRule.mousePressed(oneRandomRule)
-  twoRules.mousePressed(twoRandomRules)
-  threeRules.mousePressed(threeRandomRules)
+  turtle()
+  displayCurrents()
 }
 
+//Updates the list of rules and paramDisplay with current parameter values
 function displayCurrents() {
 	var sentence = "<b>Rules<b>" + "</br>"
 	for(var i = 0; i<rules.length;i++){

@@ -1,3 +1,4 @@
+//Initial parameter setup
 var axiom = "F"
 var sentence = axiom
 var rules = []
@@ -7,13 +8,16 @@ var angle = 25
 var scaling = .5
 var generation = 0
 
+//Initial ui variable setup
 var startPosition;
 
+//Default rule
 rules[0] = {
   a: "F",
   b: "FF+[+F-F-F]-[-F+F+F]"
 }
 
+//Takes the previous sentence and generates the next sentence
 function generate() {
   currentLen *= scaling
   generation += 1
@@ -33,10 +37,10 @@ function generate() {
     }
   }
   sentence = nextSentence
-  //createP(sentence)
   turtle()
 }
 
+//Converts the sentence into drawing instructions and updates generationDisplay
 function turtle(){
   background(51)
   resetMatrix()
@@ -66,6 +70,7 @@ function turtle(){
 															"<b>Current Sentence:</b> " + sentence;
 }
 
+//Empties the canvas and resets the parameters to their initial settings
 function resetCanvas(){
   clear()
   background(51)
@@ -75,34 +80,31 @@ function resetCanvas(){
   turtle()
 }
 
-function moveOrigin(){
-	if(this.checked()){
-		translate(width/2,height/2)
-	} else {
-		translate(width/2,height)
-	}
-}
-
-
+//Initial setup of the canvas and ui
 function setup() {
   var cnv = createCanvas(600, 600);
   background(51)
   cnv.parent("canvas")
   angleMode(DEGREES)
-  //createDiv("Rule")
+  
+  //Updates parameters with input values
+  var updateParams = () => {rules[0].b = ruleInput.value();
+  angle = angleInput.value();
+  len = drawLengthInput.value();
+  currentLen = len;
+  scaling = scalingInput.value();
+  displayCurrents();}
+  
+  //Parameter and canvas controls setup
   var ruleInput = createInput(rules[0].b)
   ruleInput.parent("rule")
-  //createDiv("Angle")
   var angleInput = createInput(angle)
   angleInput.parent("angle")
-  //createDiv("Line Draw Length")
   var drawLengthInput = createInput(len)
   drawLengthInput.parent("len")
-  //createDiv("Generational Scaling")
   var scalingInput = createInput(scaling)
   scalingInput.parent("scale")
   startPosition = createCheckbox("Center", false)
-  //startPosition.changed(moveOrigin)
   startPosition.parent("start")
   var button1 = createButton("Update parameters")
   button1.parent("buttons")
@@ -110,20 +112,15 @@ function setup() {
   button2.parent("buttons")
   var button3 = createButton("Reset Canvas")
   button3.parent("buttons")
-  turtle()
-  //document.getElementById("paramDisplay").innerHTML = displayCurrents();
-  displayCurrents()
-  var updateParams = () => {rules[0].b = ruleInput.value();
-  angle = angleInput.value();
-  len = drawLengthInput.value();
-  currentLen = len;
-  scaling = scalingInput.value();
-  displayCurrents();}
   button1.mousePressed(updateParams)
   button2.mousePressed(generate)
   button3.mousePressed(resetCanvas)
+  
+  turtle()
+  displayCurrents()
 }
 
+//Updates paramDisplay with current parameter values
 function displayCurrents() {
 	document.getElementById("paramDisplay").innerHTML = "<b>Rule:</b> " + str(rules[0].b) + "</br>" +
 	"<b>Angle:</b> " + angle + "</br>" +
