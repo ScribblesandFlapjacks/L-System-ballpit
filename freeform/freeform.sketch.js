@@ -5,7 +5,7 @@ var rules = []
 var len = 100;
 var currentLen = len;
 var angle = 25
-var scaling = .8
+var scaling = .6
 var generation = 0
 
 //Initial ui variable setup
@@ -13,11 +13,15 @@ var startPosition;
 var ruleStartInput;
 var ruleProbabilityInput;
 var ruleEndInput;
+var isStochastic;
 
 //Animation ui variable setup
 var maxGeneration;
+var incrementAngle;
+var incrementScale;
 var startAnimation;
 var stopAnimation;
+var speedUp;
 
 //Default rule
 rules[0] = {
@@ -95,6 +99,21 @@ function resetCanvas(){
   turtle()
 }
 
+function resetDefaults(){
+	axiom = "F"
+	sentence = axiom
+	rules[0] = {
+		a: "F",
+		b: "FF+[+F-F-F]-[-F+F+F]",
+		c: 1
+	}
+	len = 100;
+	currentLen = len;
+	angle = 25
+	scaling = .6
+	displayCurrents()
+}
+
 //Adds the user inputtted rule to the end of the rule array
 function addRuleFunc(){
 	rules.push({a: ruleStartInput.value(), b: ruleEndInput.value(), c:ruleProbabilityInput.value()})
@@ -109,26 +128,45 @@ function removeRuleFunc(){
 
 //Replaces current rules with one random rule
 function oneRandomRule(){
-	rules = [randomRule("F",{symbol:"",forceInclude:false},{symbol:"",forceInclude:false},true)]
+	if(isStochastic.checked()){
+		rules = [randomRule("F",{symbol:"",forceInclude:false},{symbol:"",forceInclude:false},true)]
+	} else {
+		rules = [randomRule("F",{symbol:"",forceInclude:false},{symbol:"",forceInclude:false},false)]
+	}
 	displayCurrents()
 }
 
 //Replaces current rules with two random rules
 function twoRandomRules(){
-	rules = [
-		randomRule("F",{symbol:"A",forceInclude:true},{symbol:"",forceInclude:false},true),
-		randomRule("A",{symbol:"A",forceInclude:false},{symbol:"",forceInclude:false},true)
-	]
+	if(isStochastic.checked()){
+		rules = [
+			randomRule("F",{symbol:"A",forceInclude:true},{symbol:"",forceInclude:false},true),
+			randomRule("A",{symbol:"A",forceInclude:false},{symbol:"",forceInclude:false},true)
+		]
+	} else {
+		rules = [
+			randomRule("F",{symbol:"A",forceInclude:true},{symbol:"",forceInclude:false},false),
+			randomRule("A",{symbol:"A",forceInclude:false},{symbol:"",forceInclude:false},false)
+		]
+	}
 	displayCurrents()
 }
 
 //Replaces current rules with three random rules
 function threeRandomRules(){
-	rules = [
-		randomRule("F",{symbol:"A",forceInclude:true},{symbol:"",forceInclude:false},true),
-		randomRule("A",{symbol:"B",forceInclude:true},{symbol:"",forceInclude:false},true),
-		randomRule("B",{symbol:"A",forceInclude:false},{symbol:"B",forceInclude:false},true)
-	]
+	if(isStochastic.checked()){
+		rules = [
+			randomRule("F",{symbol:"A",forceInclude:true},{symbol:"",forceInclude:false},true),
+			randomRule("A",{symbol:"B",forceInclude:true},{symbol:"",forceInclude:false},true),
+			randomRule("B",{symbol:"A",forceInclude:false},{symbol:"B",forceInclude:false},true)
+		]
+	} else {
+		rules = [
+			randomRule("F",{symbol:"A",forceInclude:true},{symbol:"",forceInclude:false},false),
+			randomRule("A",{symbol:"B",forceInclude:true},{symbol:"",forceInclude:false},false),
+			randomRule("B",{symbol:"A",forceInclude:false},{symbol:"B",forceInclude:false},false)
+		]
+	}
 	displayCurrents()
 }
 
@@ -138,19 +176,33 @@ var timeoutId;
 
 //Begins the animation loop
 function startAnim(){
-	animating = true;
-	setTimeout(animHelper(), 1000)
+	if(!animating){
+		animating = true;
+		setTimeout(animHelper(), 1000)
+	}
 }
 
 //Helper for the recursive animation loop
 function animHelper(){
-	timeoutId = setTimeout(function(){if(generation < maxGeneration.value()){
-			maxGeneration.value();
+	if(speedUp.checked()){
+		timeoutId = setTimeout(function(){if(generation < maxGeneration.value()){
+			//maxGeneration.value();
 			generate()
 			if(animating == true) {
 				animHelper()
 			}
-	} else { resetCanvas(); if(animating == true){animHelper()}	}}, 1000)
+		} else { resetCanvas(); angle += int(incrementAngle.value());
+			scaling += Math.round(float(incrementScale.value())*10)/10; displayCurrents(); if(animating == true){animHelper()}	}}, 500)
+	} else {
+		timeoutId = setTimeout(function(){if(generation < maxGeneration.value()){
+			//maxGeneration.value();
+			generate()
+			if(animating == true) {
+				animHelper()
+			}
+		} else { resetCanvas(); angle += int(incrementAngle.value());
+			scaling += Math.round(float(incrementScale.value()) * 10)/10; displayCurrents(); if(animating == true){animHelper()}	}}, 1000)
+	}
 }
 
 //Stops an ongoing animation
@@ -169,9 +221,14 @@ function hideShow () {
 	}
 }
 
+function windowResized(){
+	resizeCanvas(innerWidth*.6,innerHeight*.9)
+	resetCanvas()
+}
+
 //Initial setup of the canvas and ui
 function setup() {
-  var cnv = createCanvas(windowWidth * .6,windowHeight * .9);
+  var cnv = createCanvas(innerWidth * .6,innerHeight * .9);
   background(51)
   cnv.parent("canvas")
   angleMode(DEGREES)
@@ -180,10 +237,10 @@ function setup() {
   var updateParams = () => {
   axiom = axiomInput.value();
   sentence = axiom;
-  angle = angleInput.value();
-  len = drawLengthInput.value();
+  angle = int(angleInput.value());
+  len = int(drawLengthInput.value());
   currentLen = len;
-  scaling = scalingInput.value();
+  scaling = Math.round(float(scalingInput.value())*10)/10;
   displayCurrents();}
   
   //Rule ui setup
@@ -224,15 +281,20 @@ function setup() {
   scalingInput.parent("scale")
   startPosition = createCheckbox("Center", false)
   startPosition.parent("start")
+  isStochastic = createCheckbox("Stochastic", false)
+  isStochastic.parent("isStochastic")
   var button1 = createButton("Update parameters")
   button1.parent("buttons")
   var button2 = createButton("Generate")
   button2.parent("buttons")
   var button3 = createButton("Reset Canvas")
   button3.parent("buttons")
+  var button4 = createButton("Reset Defaults")
+  button4.parent("buttons")
   button1.mousePressed(updateParams)
   button2.mousePressed(generate)
   button3.mousePressed(resetCanvas)
+  button4.mousePressed(resetDefaults)
   
   //Visibility toggle ui
   var sentenceVisibility = createButton("Hide/Show Sentence")
@@ -243,12 +305,20 @@ function setup() {
   maxGeneration = createInput(4)
   maxGeneration.size(20)
   maxGeneration.parent("maxGen")
+  incrementAngle = createInput("0")
+  incrementAngle.size(20)
+  incrementAngle.parent("incrementAngle")
+  incrementScale = createInput("0")
+  incrementScale.size(25)
+  incrementScale.parent("incrementScale")
   startAnimation = createButton("Start")
   stopAnimation = createButton("Stop")
   startAnimation.parent("animationButtons")
   stopAnimation.parent("animationButtons")
   startAnimation.mousePressed(startAnim)
   stopAnimation.mousePressed(stopAnim)
+  speedUp = createCheckbox("2x speed", false)
+  speedUp.parent("x2Speed")
   
   turtle()
   displayCurrents()
@@ -264,5 +334,5 @@ function displayCurrents() {
 	"<b>Axiom:</b> " + axiom + "</br>" +
 	"<b>Angle:</b> " + angle + "</br>" +
 	"<b>Line Draw Length:</b> " + len + "</br>" +
-	"<b>Scaling:</b> " + scaling;
+	"<b>Scaling:</b> " + scaling.toFixed(1);
 }

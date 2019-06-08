@@ -80,9 +80,14 @@ function resetCanvas(){
   turtle()
 }
 
+function windowResized(){
+	resizeCanvas(innerWidth*.32,innerWidth*.32)
+	resetCanvas()
+}
+
 //Initial setup of the canvas and ui
 function setup() {
-  var cnv = createCanvas(600, 600);
+  var cnv = createCanvas(innerWidth*.32, innerWidth*.32);
   background(51)
   cnv.parent("canvas")
   angleMode(DEGREES)
